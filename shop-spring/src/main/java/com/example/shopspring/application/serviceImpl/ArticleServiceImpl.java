@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,22 @@ public class ArticleServiceImpl implements ArticleService {
     		}
     	}
     	return articoli;
+    }
+    @Transactional
+    @Override
+	public void updateArticolo(Integer id, Integer incremento) {
+    	
+    	Optional<Article> optional = articleRepository.findById(id);
+    	if(!optional.isPresent()) {
+    		return;
+    	}
+       Article article = optional.get();
+       article.setStock(article.getStock()+incremento);
+       articleRepository.updateArticolo(id, article.getStock());
+       Articolo articolo = new Articolo();
+       BeanUtils.copyProperties(article, articolo);
+       
+    	
     }
 
 }

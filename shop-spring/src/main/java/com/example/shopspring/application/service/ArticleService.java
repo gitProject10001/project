@@ -17,4 +17,6 @@ public interface ArticleService {
 
 	List<Articolo> trovaArticoloByStock(Integer stock);
 
+	void updateArticolo(Integer id, Integer incremento);
+
 }

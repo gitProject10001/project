@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shopspring.application.service.ArticleService;
 import com.example.shopspring.model.domain.Articolo;
+import com.example.webspring.model.dto.PatchArticleDto;
 import com.example.webspring.model.dto.PostArticleDto;
 import com.example.webspring.model.dto.PostPutShopDto;
 import com.example.webspring.model.resource.ArticleResource;
+import com.example.webspring.model.resource.ListArticles;
 import com.example.webspring.model.resource.ShopResource;
 
 @RequestMapping("/articles")
@@ -46,7 +49,7 @@ public class ArticleController {
 		return ResponseEntity.ok(articleResource);
 	}
 	@GetMapping()
-	public ResponseEntity<List<ArticleResource>> getArticlesStock(@RequestParam("t") String tvalue){
+	public ResponseEntity<ListArticles> getArticlesStock(@RequestParam("t") String tvalue){
 		Integer t = Integer.valueOf(tvalue);
 		
 		
@@ -59,8 +62,24 @@ public class ArticleController {
     		articleResources.add(articoliResource);
     		}
 		}
-		return  ResponseEntity.ok(articleResources);
+		ListArticles listArticles = new ListArticles();
+		listArticles.setArticles(articleResources);
+		return  ResponseEntity.ok(listArticles);
 	}
+	
+	
+	@PatchMapping()
+	public ResponseEntity<?> updateArticle(@Valid @RequestBody  PatchArticleDto patchArticleDto) throws URISyntaxException{
+		
+		articleService.updateArticolo(patchArticleDto.getIdarticle(),patchArticleDto.getIncrement());
+		URI location = new URI("/articles/" + patchArticleDto.getIdarticle());
+		return ResponseEntity.created(location).build();
+	}
+	
+	
+	
+	
+	
 	
 	
 	@PostMapping

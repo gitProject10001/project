@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class ArticleResource {
 private Integer idarticle;
 private String name;
+private Integer stock;
 private BigDecimal price;
 private Boolean available;
 public Integer getIdarticle() {
@@ -30,6 +31,12 @@ public Boolean getAvailable() {
 }
 public void setAvailable(Boolean available) {
 	this.available = available;
+}
+public Integer getStock() {
+	return stock;
+}
+public void setStock(Integer stock) {
+	this.stock = stock;
 }
 
 
